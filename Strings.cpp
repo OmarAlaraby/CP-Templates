@@ -41,9 +41,12 @@ template < typename T = int > ostream& operator << (ostream &out, const vector <
     return out;
 }
 
+//--------------------------------------------------------------------------------
+
+
 string min_cyclic_string(string s) {
     s += s;
-    int n = s.size();
+    int n = sz(s);
     int i = 0, ans = 0;
     while (i < n / 2) {
         ans = i;
@@ -60,6 +63,67 @@ string min_cyclic_string(string s) {
     }
     return s.substr(ans, n / 2);
 }
+
+
+ll compute_hash(string const& s) {
+    const int p = 31 , m = 1e9 + 9;
+    ll hash_value = 0, p_pow = 1;
+
+    for (char &c : s) {
+        hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+    return hash_value;
+}
+
+
+vector < vector < int > > group_strings(vector < string > const& s) {
+    int n = sz(s);
+    vector < pair < ll, int > > hashes(n);
+    for (int i = 0; i < n; i++)
+        hashes[i] = {compute_hash(s[i]), i};
+
+    sort(all(hashes));
+
+    vector< vector < int > > groups;
+    for (int i = 0; i < n; i++) {
+        if (i == 0 or hashes[i].first != hashes[i-1].first)
+            groups.emplace_back();
+        groups.back().push_back(hashes[i].second);
+    }
+    return groups;
+}
+
+
+
+int count_unique_substrings(string const& s) {
+    int n = sz(s);
+
+    const int p = 31, m = 1e9 + 9;
+    vector < ll > p_pow(n);
+    p_pow[0] = 1;
+    for (int i = 1; i < n; i++)
+        p_pow[i] = (p_pow[i-1] * p) % m;
+
+    vector < ll > h(n + 1, 0);
+    for (int i = 0; i < n; i++)
+        h[i+1] = (h[i] + (s[i] - 'a' + 1) * p_pow[i]) % m;
+
+    int cnt = 0;
+    for (int l = 1; l <= n; l++) {
+        set < ll > hs;
+        for (int i = 0; i <= n - l; i++) {
+            ll cur_h = (h[i + l] + m - h[i]) % m;
+            cur_h = (cur_h * p_pow[n-i-1]) % m;
+            hs.insert(cur_h);
+        }
+        cnt += sz(hs);
+    }
+    return cnt;
+}
+
+
+//--------------------------------------------------------------------------------
 
 void Solve(){
 
