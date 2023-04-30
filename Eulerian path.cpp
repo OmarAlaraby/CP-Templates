@@ -113,6 +113,89 @@ template < typename T = int > struct Eulerian_Directed_Path{
 };
 
 
+// Eulerian Path for directed graphs of strings
+template < typename T = int > struct Eulerian_Directed_Path{
+    map < string , vector < string > > adj;
+    map < string , T > in, out;
+    vector < string > path;
+    set < string > subs;
+    map < string , bool > connected;
+ 
+    T n, m;
+    Eulerian_Directed_Path(T n, T m) : n(n), m(m){}
+ 
+    void add_edge(string u, string v){
+        adj[u].push_back(v);
+        subs.emplace(u);
+        subs.emplace(v);
+        out[u]++;
+        in[v]++;
+    }
+ 
+    bool hasEulerianPath(){
+        T start_nodes = 0, end_nodes = 0;
+        for(auto &i : subs){
+            if(abs(in[i] - out[i]) > 1) return false;
+            if(out[i] - in[i] == 1) start_nodes++;
+            if(in[i] - out[i] == 1) end_nodes++;
+        }
+        return (start_nodes == 0 and end_nodes == 0) or (start_nodes == 1 and end_nodes == 1);
+    }
+ 
+    string find_start_node(){
+        string start;
+        for(auto &i : subs){
+            if(out[i] - in[i] == 1) return i;
+            if(out[i] > 0) start = i;
+        }
+        return start;
+    }
+ 
+    void dfs(string u){
+        stack < string > st;
+        st.push(u);
+ 
+        while(not st.empty()){
+            string v = st.top();
+            connected[v] = true;
+            
+            if(adj[v].empty()){
+                if(sz(path)){
+                    string &fix = path.back();
+                    reverse(all(fix));
+                    fix.pop_back();
+                    reverse(all(fix));
+                }
+                path.push_back(v);
+                st.pop();
+            }
+            else{
+                string w = adj[v].back();
+                adj[v].pop_back();
+                st.push(w);
+            }
+        }
+    }
+ 
+    vector < string > get_path(){
+        if(!hasEulerianPath())
+            return {}; // return an empty path
+ 
+        dfs(find_start_node());
+ 
+        for(auto &i : subs)
+            if(not connected[i])
+                return {};
+ 
+        // if(sz(path) != m + 1)
+        //     return {};
+ 
+        reverse(all(path));
+        return path;
+    }
+};
+
+
 // Eulerian Path for Undirected graphs
 template < typename T = int > struct Eulerian_Undirected_Path{
     vector < vector < T > > adj;
