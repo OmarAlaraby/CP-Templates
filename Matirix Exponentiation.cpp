@@ -45,7 +45,10 @@ template < typename T = int > struct matrix{
 
     vector < vector < T > > v;
 
-    int n, m;
+    int n = 2, m = 2;
+
+    matrix(){}
+
     matrix(T N , T M){
         n = N , m = M;
         v.assign(n , vector < T >(m, 0));
@@ -75,21 +78,35 @@ template < typename T = int > struct matrix{
 
 
     matrix operator * (const matrix &other){
-        matrix < T > ret(n, other.m);
-        int r1 = n , c1 = m , c2 = other.m;
+        matrix result(n, other.m);
 
-        for(int i = 0; i < r1; ++i)
-            for(int j = 0; j < c2; ++j)
-                for(int k = 0; k < c1; ++k)
-                    ret[i][j] += v[i][k] * other.v[k][j];
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<other.m; j++) {
+                for(int k=0; k<m; k++) {
+                    result.v[i][j] += ((v[i][k] % Mod) * (other.v[k][j] % Mod)) % Mod;
+                }
+            }
+        }
+        return result;
+    }
+
+    matrix operator = (const matrix &other){
+        n = other.n , m = other.m;
+        v = other.v;
+        return (*this);
+    }
+
+    matrix get_Trans(){
+        matrix < T > ret;
+        ret.v = {
+            {0, 19},
+            {0, 0}
+        };
         return ret;
     }
 
     matrix power(T x){
-        matrix < T > ret(n , m);
-
-        for(int i = 0; i < n; i++)
-            ret[i][i] = 1;
+        matrix < T > ret = get_Trans();
 
         while(x){
             if(x & 1)
