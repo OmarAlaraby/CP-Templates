@@ -1,77 +1,57 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h> // E
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #include <ext/rope>
-
+ 
 using namespace std;
 using namespace __gnu_pbds;
-
-void Omar_Alaraby(char * input , char * output){
+ 
+void Omar_Alaraby(){
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
-    freopen(input, "r", stdin), freopen(output, "w", stdout);
+    // freopen("business.in", "r", stdin);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 #endif
 }
 
-#define cin2d(vec, n, m) for(int i = 0; i < n; i++) for(int j = 0; j < m && cin >> vec[i][j]; j++);
-#define cout2d(vec , n , m) for(int i = 0; i < n; i++, cout << "\n") for(int j = 0; j < m && cout << vec[i][j] << " "; j++);
-#define cout_map(mp) for(auto& [first, second] : mp) cout << first << " --> " << second << "\n";
-#define put(s) return void(cout << s << dl);
-#define Time cerr << "Time Taken: " << (float)clock() / CLOCKS_PER_SEC << " Secs" << "\n";
 #define fixed(n) fixed << setprecision(n)
-#define ceil(n, m) (((n) / (m)) + ((n) % (m) ? 1 : 0))
-#define Num_of_Digits(n) ((int)log10(n) + 1)
-#define all(vec) vec.begin(), vec.end()
-#define rall(vec) vec.rbegin(), vec.rend()
-#define sz(x) int(x.size())
-#define ll long long
-#define ull unsigned long long
+// #define ceil(n, m) (((n) / (m)) + ((n) % (m) ? 1 : 0))
 #define dl "\n"
-#define ordered_set tree<ll ,  null_type ,  less_equal<> ,  rb_tree_tag ,  tree_order_statistics_node_update>
-
-const ll Mod = 998244353;
-
-template < typename T = int > istream& operator >> (istream &in, vector < T > &v) {
-    for (auto &x : v) in >> x;
-    return in;
-}
-
-template < typename T = int > ostream& operator << (ostream &out, const vector < T > &v) {
-    for (const T &x: v) out << x << ' ';
-    return out;
-}
+#define ordered_set tree<int ,  null_type ,  less_equal<> ,  rb_tree_tag ,  tree_order_statistics_node_update>
+#define int long long
+#define all(v) v.begin(), v.end()
+#define INF 2000000000000000000
+#define Mod 998244353
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
-#define ll long long
+#define int long long
 #define Mod 1000000007
-
-typedef vector<int> vi;
-typedef vector<ll> vl;
 
 // get the number of perfect square between l and r
 
-ll num_of_pref_squares(ll l, ll r){
-    return ((ll)(sqrtl(r)) - ceil(sqrtl(l)) + 1);
+int num_of_pref_squares(int l, int r){
+    return ((int)(sqrtl(r)) - ceil(sqrtl(l)) + 1);
 }
 
 
 
-ll GCD(ll a, ll b){
+int GCD(int a, int b){
     return (!b ? a : GCD(b, a % b));
 }
 
 // least common multiplication between two numbers
 
-ll LCM(ll a, ll b){
+int LCM(int a, int b){
     return a / GCD(a, b) * b;
 }
 
 // Get vector with the prime factors of number
 
-vector < int > prime_factorization(ll n){
+vector < int > prime_factorization(int n){
     vector < int > factors;
     while(n % 2 == 0) factors.push_back(2), n /= 2;
     for(int i = 3; i <= sqrt(n); i += 2)
@@ -82,8 +62,8 @@ vector < int > prime_factorization(ll n){
 
 //Get the factorst of the a number
 
-vi factors(ll n){
-    vi factors;
+vector < int > factors(int n){
+    vector < int > factors;
     while(n % 2 == 0) factors.push_back(2), n /= 2;
     for(int i = 3; i <= sqrt(n); i++)
         while(n % i == 0) factors.push_back(i), n /= i;
@@ -93,12 +73,12 @@ vi factors(ll n){
 
 // nCr with Mod using dp
 
-ll nCr(ll n, ll r){
+int nCr(int n, int r){
 
     if(n == 0 or r < 0)
         return r == 0;
 
-    ll &ret = dp[n][r];
+    int &ret = dp[n][r];
     if(~ret)
         return ret % Mod;
 
@@ -107,15 +87,15 @@ ll nCr(ll n, ll r){
 
 // Combination
 
-ll nCr(ll n, ll r){
+int nCr(int n, int r){
     if(r > n) return 0;
-    ll p = 1, k = 1;
+    int p = 1, k = 1;
     if (n - r < r) r = n - r;
     // condition for minimum choose
     if(n < 1) return 0;
     while (r > 0){
         p *= n, k *= r;
-        ll m = __gcd(p, k);
+        int m = __gcd(p, k);
         p /= m, k /= m, n--, r--;
     }
     return p;
@@ -123,9 +103,9 @@ ll nCr(ll n, ll r){
 
 // Permutation
 
-ll nPr(ll n, ll r){
+int nPr(int n, int r){
     if(r > n) return 0;
-    ll npr = 1;
+    int npr = 1;
     while(r-- > 0)
         npr *= n--;
     return npr;
@@ -133,8 +113,8 @@ ll nPr(ll n, ll r){
 
 // get a mod for big int
 
-ll Big_Mod(string s, ll mod){
-    ll res = 0;
+int Big_Mod(string s, int mod){
+    int res = 0;
     for(auto& c : s)
         res = (res * 10 + (c - '0')) % mod;
     return res;
@@ -142,7 +122,7 @@ ll Big_Mod(string s, ll mod){
 
 // add two number and take mod for them
 
-void add(ll& a, ll b, ll mod = 1e9 + 7){
+void add(ll& a, int b, int mod = 1e9 + 7){
     a += b;
     if(a >= mod)
         a -= mod;
@@ -150,14 +130,14 @@ void add(ll& a, ll b, ll mod = 1e9 + 7){
 
 // multiply two number and take mod for them
 
-void mul(ll& a, ll b, ll mod = 1e9 + 7){
+void mul(ll& a, int b, int mod = 1e9 + 7){
     a = ((a % mod) * (b % mod)) % mod;
 }
 
 // b power e in O(log(n))
 
-ll fast_pow(ll b, ll e){
-    ll power = 1;
+int fast_pow(int b, int e){
+    int power = 1;
     while(e){
         if(e & 1) power *= b;
         e >>= 1;
@@ -168,8 +148,8 @@ ll fast_pow(ll b, ll e){
 
 // b power e % mod in O(log(e))
 
-ll fast_pow(ll b, ll e, ll mod){
-    ll power = 1;
+int fast_pow(int b, int e, int mod){
+    int power = 1;
     while(e){
         if(e & 1) mul(power, b, mod);
         e >>= 1;
@@ -180,8 +160,8 @@ ll fast_pow(ll b, ll e, ll mod){
 
 // b multiply e % mod in O(log(e))
 
-ll fast_mul(ll b, ll e, ll mod){
-    ll mult = 0;
+int fast_mul(int b, int e, int mod){
+    int mult = 0;
     while(e){
         if(e & 1) add(mult, b, mod);
         e >>= 1;
@@ -192,7 +172,7 @@ ll fast_mul(ll b, ll e, ll mod){
 
 // Check if number is prime or not
 
-bool is_prime(ll n){
+bool is_prime(int n){
     if(n < 2 || (n % 2 == 0 && n != 2)) return false;
     for(int i = 3; i <= sqrt(n); i += 2)
         if(n % i == 0) return false;
@@ -201,7 +181,7 @@ bool is_prime(ll n){
 
 // get the number of divisors for n
 
-int number_of_divisors(ll n){
+int number_of_divisors(int n){
     int divisors = 0;
     for(int i = 1; i < sqrt(n); i++)
         if(n % i == 0) divisors += 2;
@@ -210,25 +190,25 @@ int number_of_divisors(ll n){
 
 // get Summation of divisors for n
 
-ll sum_of_divisors(ll n){
-    ll sum_divisors = 0;
+int sum_of_divisors(int n){
+    int sum_divisors = 0;
     for(int i = 1; i < sqrt(n); i++)
         if(n % i == 0) sum_divisors += ((n / i) + i);
-    ll sq = sqrt(n);
+    int sq = sqrt(n);
     return sum_divisors + (sq * sq == n ? sq : 0);
 }
 
 // get vector with the divisors for n
 
-vector < ll > Get_Divisors(ll n){
-    vector < ll > divisors;
+vector < int > Get_Divisors(int n){
+    vector < int > divisors;
     for(int i = 1; i < sqrt(n); i++)
         if(n % i == 0) divisors.push_back(i), divisors.push_back(n / i);
     if(sqrt(n) == int(sqrt(n))) divisors.push_back(sqrt(n));
     return divisors;
 }
 
-// print all permutation of an array
+// print aint permutation of an array
 
 void Print_Permutation(vector < int >& nums){
     sort(all(nums));
@@ -239,7 +219,7 @@ void Print_Permutation(vector < int >& nums){
     } while(next_permutation(nums.begin(), nums.end()));
 }
 
-// print all permutation of a string
+// print aint permutation of a string
 
 void Print_Permutation(string s){
     sort(all(s));
@@ -250,34 +230,34 @@ void Print_Permutation(string s){
 
 // get the summation between two numbers or the summation between 1 and n
 
-ll Summation(ll r, ll l = 0){
+int Summation(int r, int l = 0){
     if(l > r) swap(l, r);
     return (r * (r + 1) / 2) - (l * (l - 1) / 2);
 }
 
 // Get how many number divisable by c between a and b
 
-ll how_many_divisors(ll a, ll b, ll c){
+int how_many_divisors(int a, int b, int c){
     return (b / c) - ((a - 1) / c);
 }
 
 // Get summation of numbers divisable by c between a and b
 
-ll Summation_of_Devisors(ll a, ll b, ll c){
-    ll right = Summation(b / c);
-    ll left = Summation((a - 1) / c);
+int Summation_of_Devisors(int a, int b, int c){
+    int right = Summation(b / c);
+    int left = Summation((a - 1) / c);
     return (right - left) * c;
 }
 
 // get logb(a)
 
-double get_log(ll a, int b){
+double get_log(int a, int b){
     return log(a) / log(b);
 }
 
 // Check if number power of another or not
 
-bool is_power(ll number, int base = 2){
+bool is_power(int number, int base = 2){
     return (get_log(number, base) - (ll) get_log(number, base) <= EPS);
 }
 
@@ -289,7 +269,7 @@ double dist(double x1, double y1, double x2, double y2){
 
 // Check if it valid triangle with 3 length sides
 
-bool is_triangle(ll a, ll b, ll c){
+bool is_triangle(int a, int b, int c){
     return (a + b > c) && (a + c > b) && (b + c > a) && (a && b && c);
 }
 
@@ -302,20 +282,20 @@ double slope(double x1, double y1, double x2, double y2){
 
 // Check if three points in the same line
 
-bool is_same_line(ll x1, ll y1, ll x2, ll y2, ll x3, ll y3){
+bool is_same_line(int x1, int y1, int x2, int y2, int x3, int y3){
     return (y2 - y1) * (x3 - x1) == (y3 - y1) * (x2 - x1);
 }
 
 // Check if is perfect square
 
-bool is_perfect_square(ll n){
-    ll sq = sqrt(n);
+bool is_perfect_square(int n){
+    int sq = sqrt(n);
     return sq * sq == n;
 }
 
 // Convert Decimal to any base
 
-string decimal_to_any_base(ll decimal, ll base){
+string decimal_to_any_base(int decimal, int base){
     if(decimal == 0) return "0";
     string num = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     string result;
@@ -328,11 +308,11 @@ string decimal_to_any_base(ll decimal, ll base){
 
 // Convert any base to decimal
 
-ll  any_base_to_decimal(string str, int base) {
+int  any_base_to_decimal(string str, int base) {
     auto val = [](char c){
         return (c >= '0' && c <= '9' ? (int) c - '0' : (int) c - 'A' + 10);
     };
-    ll len = sz(str), power = 1, num = 0, i;
+    int len = sz(str), power = 1, num = 0, i;
     for (i = len - 1; i >= 0; i--) {
         num += val(str[i]) * power;
         power = power * base;
@@ -343,19 +323,20 @@ ll  any_base_to_decimal(string str, int base) {
 
 
 // seive primes
-
-Seive(int n){
+vector < int > is_prime;
+void Seive(int n){
     is_prime.assign(n + 1, true);
     is_prime[0] = is_prime[1] = false;
-    for(ll i = 2; i <= sqrt(n); i++)
+    for(int i = 2; i <= sqrt(n); i++)
         if(is_prime[i])
-            for(ll j = i * i; j <= n; j += i) is_prime[j] = false;
+            for(int j = i * i; j <= n; j += i) is_prime[j] = false;
 }
 
 
 // fast power function
-ll fpow(ll base, ll ex){
-    ll res = 1;
+
+int fpow(int base, int ex){
+    int res = 1;
 
     while (ex){
         if(ex & 1)
@@ -366,14 +347,17 @@ ll fpow(ll base, ll ex){
     return res;
 }
 
+
+
 // Mod inverse
-void mul(ll& a, ll b, ll mod = 1e9 + 7){
+
+void mul(ll& a, int b, int mod = 1e9 + 7){
     a = ((a % mod) * (b % mod)) % mod;
 }
 
 
-ll fast_pow(ll b, ll e, ll mod){
-    ll power = 1;
+int fast_pow(int b, int e, int mod){
+    int power = 1;
     while(e){
         if(e & 1) mul(power, b, mod);
         e >>= 1;
@@ -382,38 +366,61 @@ ll fast_pow(ll b, ll e, ll mod){
     return power % mod;
 }
 
-ll modInv(ll n){
+int modInv(int n){
     return fast_pow(n, Mod - 2, Mod);
 }
 
+
+
+
+
 // sieve factorization
-ll N = 4e6;
+int N = 4e6;
 vector < int > factors(N + 1 , 2);
 
 void factorization(){
     factors[1] = 1 , factors[0] = 0;
-    for(ll i = 2; i<= N; i++){
-        for(ll j = i + i; j <=N; j += i){
+    for(int i = 2; i<= N; i++){
+        for(int j = i + i; j <=N; j += i){
             factors[j]++;
         }
     }
 }
 
-void Solve(){
 
+// Extended Euclidean Algorithm
+int gcd(int a, int b, int& x, int& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int x1, y1;
+    int ret = gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return ret;
 }
 
-int main(){
-    Omar_Alaraby("input.txt" , "output.txt");
+void Solve(){
 
-    int tc = 1;
-    //cin >> tc;
+    
+} 
 
-    for(int i=1; i<=tc; i++){
-        //cout << "Scenario #" << i << ":" << dl;
+int32_t main(){
+    Omar_Alaraby();
+    
+    int testCases=1;
+    cin >> testCases;
+    
+    bool first = true;
+    while(testCases--){
+        if(not first)
+            cout << dl;
         Solve();
-    }
 
-    Time
+        first = false;
+    }
+ 
     return 0;
 }

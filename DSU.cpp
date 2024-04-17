@@ -1,91 +1,91 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h> // E
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #include <ext/rope>
-
+ 
 using namespace std;
 using namespace __gnu_pbds;
-
-void Omar_Alaraby(char * input , char * output){
+ 
+void Omar_Alaraby(){
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
-    freopen(input, "r", stdin), freopen(output, "w", stdout);
+    // freopen("business.in", "r", stdin);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 #endif
 }
 
-#define cin2d(vec, n, m) for(int i = 0; i < n; i++) for(int j = 0; j < m && cin >> vec[i][j]; j++);
-#define cout2d(vec , n , m) for(int i = 0; i < n; i++, cout << "\n") for(int j = 0; j < m && cout << vec[i][j] << " "; j++);
-#define cout_map(mp) for(auto& [first, second] : mp) cout << first << " --> " << second << "\n";
-#define put(s) return void(cout << s << dl);
-#define Time cerr << "Time Taken: " << (float)clock() / CLOCKS_PER_SEC << " Secs" << "\n";
 #define fixed(n) fixed << setprecision(n)
 #define ceil(n, m) (((n) / (m)) + ((n) % (m) ? 1 : 0))
-#define Num_of_Digits(n) ((int)log10(n) + 1)
-#define all(vec) vec.begin(), vec.end()
-#define rall(vec) vec.rbegin(), vec.rend()
-#define sz(x) int(x.size())
-#define ll long long
-#define ull unsigned long long
 #define dl "\n"
-#define ordered_set tree<ll ,  null_type ,  less_equal<> ,  rb_tree_tag ,  tree_order_statistics_node_update>
+#define ordered_set tree<int ,  null_type ,  less_equal<> ,  rb_tree_tag ,  tree_order_statistics_node_update>
+#define int long long
+#define all(v) v.begin(), v.end()
+#define INF 2000000000000000000
+#define Mod 998244353
 
-const ll Mod = 1e9 + 7;
+struct edge{
+    int from , to;
+    double w;
 
-template < typename T = int > istream& operator >> (istream &in, vector < T > &v) {
-    for (auto &x : v) in >> x;
-    return in;
-}
+    edge(int from, int to , double w) : from(from), to(to), w(w) {}
 
-template < typename T = int > ostream& operator << (ostream &out, const vector < T > &v) {
-    for (const T &x: v) out << x << ' ';
-    return out;
-}
-
-template < typename T = int, int Base = 1 > struct DSU {
-    
-    vector < T > parent, Gsize;
-
-    DSU(int MaxNodes){
-        parent = Gsize = vector < T > (MaxNodes + 5);
-        for(int i = Base; i <= MaxNodes; i++)
-          parent[i] = i, Gsize[i] = 1;
+    bool operator < (const edge &rhs) const{
+        return w - rhs.w > 1e-9;
     }
-    
-    T find_leader(int node){
-        return parent[node] = (parent[node] == node ? node : find_leader(parent[node]));
+};
+
+struct unionFind{
+    vector < int > parent, rank;
+
+    unionFind(int n){
+        parent = rank = vector < int > (n , 0);
+        for(int i=1; i<n; i++)
+            parent[i] = i, rank[i] = 1;
     }
 
-    bool is_same_sets(int u, int v){
-        return find_leader(u) == find_leader(v);
+    int findSet(int v){
+        if(parent[v] == v)
+            return v;
+        
+        return parent[v] = findSet(parent[v]);
     }
 
-    void union_sets(int u, int v){
-        int leader_u = find_leader(u), leader_v = find_leader(v);
-        if(leader_u == leader_v) return;
-        if(Gsize[leader_u] < Gsize[leader_v]) swap(leader_u, leader_v);
-        Gsize[leader_u] += Gsize[leader_v], parent[leader_v] = leader_u;
+    void link(int x, int y){
+        if(rank[x] > rank[y])
+            swap(x, y);
+        parent[x] = y;
+        rank[y] += (rank[x] == rank[y]);
     }
 
-    int get_size(int u){
-        return Gsize[find_leader(u)];
+    bool unionSets(int x, int y){
+        x = findSet(x) , y = findSet(y);
+        if(x != y)
+            link(x, y);
+
+        return x != y;
     }
 };
 
 void Solve(){
 
-}
+    
+} 
 
-int main(){
-    Omar_Alaraby("input.txt" , "output.txt");
-
-    int tc = 1;
-    //cin >> tc;
-
-    for(int i=1; i<=tc; i++){
-        //cout << "Scenario #" << i << ":" << dl;
+int32_t main(){
+    Omar_Alaraby();
+    
+    int testCases=1;
+    cin >> testCases;
+    
+    bool first = true;
+    while(testCases--){
+        if(not first)
+            cout << dl;
         Solve();
-    }
 
-    Time
+        first = false;
+    }
+ 
     return 0;
 }
