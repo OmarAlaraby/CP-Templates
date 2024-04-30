@@ -128,12 +128,6 @@ void add(ll& a, int b, int mod = 1e9 + 7){
         a -= mod;
 }
 
-// multiply two number and take mod for them
-
-void mul(ll& a, int b, int mod = 1e9 + 7){
-    a = ((a % mod) * (b % mod)) % mod;
-}
-
 // b power e in O(log(n))
 
 int fast_pow(int b, int e){
@@ -144,6 +138,12 @@ int fast_pow(int b, int e){
         b *= b;
     }
     return power;
+}
+
+// multiply two number and take mod for them
+
+void mul(ll& a, int b, int mod = 1e9 + 7){
+    a = ((a % mod) * (b % mod)) % mod;
 }
 
 // b power e % mod in O(log(e))
